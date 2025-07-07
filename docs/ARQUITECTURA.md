@@ -25,3 +25,14 @@ Cada módulo funciona de manera asíncrona para repartir la carga y reintentar f
 - Tiempo promedio de procesamiento por PDF.
 
 La implementación inicial puede concentrarse en la ingesta, extracción de texto y detección básica de teléfonos. Posteriormente se añadirán la validación externa, la mensajería multicanal y un sistema de monitoreo más robusto.
+
+## Implementación de referencia
+
+En esta PoC se incluyó un pequeño servicio basado en **FastAPI** que expone un endpoint `/ingest` para subir un PDF. El flujo de procesamiento se realiza de manera secuencial mediante los siguientes módulos:
+
+- `pdf_ingester.ingestion` guarda el archivo en disco.
+- `pdf_ingester.extraction` utiliza `pdfminer.six` para obtener el texto.
+- `pdf_ingester.phone` detecta y normaliza los números telefónicos mediante `phonenumbers`.
+- `pdf_ingester.pipeline` orquesta los pasos anteriores.
+
+Este código sirve como punto de partida para evolucionar hacia una arquitectura de microservicios con colas de mensajes y procesos asíncronos.
